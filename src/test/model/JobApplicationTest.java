@@ -25,10 +25,30 @@ class JobApplicationTest {
 
     @Test
     public void testInvalidStatus() {
+        testJob.setStatus(7);
+        assertEquals(0, testJob.getStatus());
+        testJob.setStatus(-1);
+        assertEquals(0, testJob.getStatus());
         testJob.setStatus(10);
         assertEquals(0, testJob.getStatus());
         testJob.setStatus(-5);
         assertEquals(0, testJob.getStatus());
+        testJob.setStatus(100);
+        assertEquals(0, testJob.getStatus());
+        testJob.setStatus(-100);
+        assertEquals(0, testJob.getStatus());
+    }
+
+    @Test
+    public void testValidStatus() {
+        testJob.setStatus(6);
+        assertEquals(6, testJob.getStatus());
+        testJob.setStatus(3);
+        assertEquals(3, testJob.getStatus());
+        testJob.setStatus(0);
+        assertEquals(0, testJob.getStatus());
+        testJob.setStatus(1);
+        assertEquals(1, testJob.getStatus());
     }
 
     @Test
@@ -36,6 +56,14 @@ class JobApplicationTest {
         testJob.changeStatus(10);
         assertEquals(0, testJob.getStatus());
         testJob.changeStatus(-10);
+        assertEquals(0, testJob.getStatus());
+        testJob.changeStatus(7);
+        assertEquals(0, testJob.getStatus());
+        testJob.changeStatus(-1);
+        assertEquals(0, testJob.getStatus());
+        testJob.changeStatus(100);
+        assertEquals(0, testJob.getStatus());
+        testJob.changeStatus(-100);
         assertEquals(0, testJob.getStatus());
     }
 
