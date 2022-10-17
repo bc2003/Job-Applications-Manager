@@ -47,6 +47,8 @@ public class JobsManager {
             removeJob();
         } else if (command.equals("u")) {
             updateJobStatus();
+        } else if (command.equals("v")) {
+            viewJobs();
         } else {
             System.out.println("What do you mean? Try again, please. \n");
         }
@@ -66,6 +68,7 @@ public class JobsManager {
         System.out.println("\ta -> add job");
         System.out.println("\tr -> remove job");
         System.out.println("\tu -> update a job status");
+        System.out.println("\tv -> view stored jobs");
         System.out.println("\tq -> quit");
     }
 
@@ -145,6 +148,12 @@ public class JobsManager {
                 System.out.println("Job not found.");
             }
             keepRunning = false;
+        }
+    }
+
+    private void viewJobs() {
+        for (JobApplication jobs : manager) {
+            jobs.displayJob();
         }
     }
 
