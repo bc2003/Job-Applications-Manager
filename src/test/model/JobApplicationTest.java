@@ -88,13 +88,4 @@ class JobApplicationTest {
         assertTrue(JobApplication.validStatus(0));
         assertFalse(JobApplication.validStatus(420));
     }
-
-    @Test
-    public void testDisplayJob() {
-        assertTrue(testJob.displayJob());
-        testJob.changeStatus(10);
-        assertTrue(testJob.displayJob());
-        testJob.changeStatus(3);
-        assertTrue(testJob.displayJob());
-    }
 }

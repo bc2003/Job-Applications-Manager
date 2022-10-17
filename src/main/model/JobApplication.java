@@ -74,31 +74,4 @@ public class JobApplication {
     public static boolean validStatus(int status) {
         return status <= 6 && status >= 0;
     }
-
-    // EFFECTS: prints out the job itself
-    public boolean displayJob() {
-        if (this.status == 0) {
-            System.out.println(this.title + "/" + this.company + "/" + "interested");
-            return true;
-        } else if (this.status == 1) {
-            System.out.println(this.title + "/" + this.company + "/" + "applied");
-            return true;
-        } else if (this.status == 2) {
-            System.out.println(this.title + "/" + this.company + "/" + "interviewed");
-            return true;
-        } else if (this.status == 3) {
-            System.out.println(this.title + "/" + this.company + "/" + "received offer");
-            return true;
-        } else if (this.status == 4) {
-            System.out.println(this.title + "/" + this.company + "/" + "turned down offer");
-            return true;
-        } else if (this.status == 5) {
-            System.out.println(this.title + "/" + this.company + "/" + "accepted offer");
-            return true;
-        } else if (this.status == 6) {
-            System.out.println(this.title + "/" + this.company + "/" + "rejected");
-            return true;
-        }
-        return false;
-    }
 }

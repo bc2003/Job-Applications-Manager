@@ -151,9 +151,24 @@ public class JobsManager {
         }
     }
 
+    // EFFECTS: prints all the current jobs in the manager
     private void viewJobs() {
         for (JobApplication jobs : manager) {
-            jobs.displayJob();
+            if (jobs.getStatus() == 0) {
+                System.out.println(jobs.getTitle() + "/" + jobs.getCompany() + "/" + "interested");
+            } else if (jobs.getStatus() == 1) {
+                System.out.println(jobs.getTitle() + "/" + jobs.getCompany() + "/" + "applied");
+            } else if (jobs.getStatus() == 2) {
+                System.out.println(jobs.getTitle() + "/" + jobs.getCompany() + "/" + "interviewed");
+            } else if (jobs.getStatus() == 3) {
+                System.out.println(jobs.getTitle() + "/" + jobs.getCompany() + "/" + "received offer");
+            } else if (jobs.getStatus() == 4) {
+                System.out.println(jobs.getTitle() + "/" + jobs.getCompany() + "/" + "turned down offer");
+            } else if (jobs.getStatus() == 5) {
+                System.out.println(jobs.getTitle() + "/" + jobs.getCompany() + "/" + "accepted offer");
+            } else if (jobs.getStatus() == 6) {
+                System.out.println(jobs.getTitle() + "/" + jobs.getCompany() + "/" + "rejected");
+            }
         }
     }
 
