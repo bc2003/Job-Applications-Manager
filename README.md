@@ -29,3 +29,5 @@ more efficiently.
 - As a user, I want to be able to add the status of a job as prospective or applied.
 - As a user, I want to be able to add the final status of a job to accepted job offer, turned down job offer, or rejected.
 - As a user, I want to be able to remove a job from the job application manager.
+- (P2) As a user, I want to be able to save all the jobs currently in the job application manager to file.
+- (P2) As a user, I want to be able to load all jobs saved into the job application manager from file.

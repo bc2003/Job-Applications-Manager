@@ -74,4 +74,32 @@ public class JobApplication {
     public static boolean validStatus(int status) {
         return status <= 6 && status >= 0;
     }
+
+    // EFFECTS: verifies if a job with a position and company is equal to the stored job
+    public boolean sameJob(String position, String company) {
+        if (this.title == position && this.company == company) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // EFFECTS: displays the job with its attributes separated by slashes
+    public void displayJob() {
+        if (this.status == 0) {
+            System.out.println(this.title + "/" + this.company + "/interested");
+        } else if (this.status == 1) {
+            System.out.println(this.title + "/" + this.company + "/applied");
+        } else if (this.status == 2) {
+            System.out.println(this.title + "/" + this.company + "/interviewed");
+        } else if (this.status == 3) {
+            System.out.println(this.title + "/" + this.company + "/received offer");
+        } else if (this.status == 4) {
+            System.out.println(this.title + "/" + this.company + "/turned down offer");
+        } else if (this.status == 5) {
+            System.out.println(this.title + "/" + this.company + "/accepted offer");
+        } else if (this.status == 6) {
+            System.out.println(this.title + "/" + this.company + "/rejected :(");
+        }
+    }
 }

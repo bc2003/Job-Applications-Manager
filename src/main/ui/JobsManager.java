@@ -134,7 +134,7 @@ public class JobsManager {
             String company = input.next();
 
             for (JobApplication jobs : manager) {
-                if (company.equals(jobs.getCompany()) && title.equals(jobs.getTitle())) {
+                if (jobs.sameJob(jobs.getTitle(), jobs.getTitle())) {
                     statusMenu();
                     System.out.println("What would you like to set the status of the job as?");
                     int newStatus = input.nextInt();
@@ -153,28 +153,18 @@ public class JobsManager {
 
     // EFFECTS: prints all the current jobs in the manager
     private void viewJobs() {
-        for (JobApplication jobs : manager) {
-            if (jobs.getStatus() == 0) {
-                System.out.println(jobs.getTitle() + "/" + jobs.getCompany() + "/" + "interested");
-            } else if (jobs.getStatus() == 1) {
-                System.out.println(jobs.getTitle() + "/" + jobs.getCompany() + "/" + "applied");
-            } else if (jobs.getStatus() == 2) {
-                System.out.println(jobs.getTitle() + "/" + jobs.getCompany() + "/" + "interviewed");
-            } else if (jobs.getStatus() == 3) {
-                System.out.println(jobs.getTitle() + "/" + jobs.getCompany() + "/" + "received offer");
-            } else if (jobs.getStatus() == 4) {
-                System.out.println(jobs.getTitle() + "/" + jobs.getCompany() + "/" + "turned down offer");
-            } else if (jobs.getStatus() == 5) {
-                System.out.println(jobs.getTitle() + "/" + jobs.getCompany() + "/" + "accepted offer");
-            } else if (jobs.getStatus() == 6) {
-                System.out.println(jobs.getTitle() + "/" + jobs.getCompany() + "/" + "rejected");
+        if (manager.isEmpty()) {
+            System.out.println("No Jobs Found");
+        } else {
+            for (JobApplication jobs : manager) {
+                jobs.displayJob();
             }
         }
     }
 
     // EFFECTS: displays options for job status to user
     private void statusMenu() {
-        System.out.println("\n0 -> interested");
+        System.out.println("\n\t0 -> interested");
         System.out.println("\t1 -> applied");
         System.out.println("\t2 -> interviewed");
         System.out.println("\t3 -> received offer");
