@@ -1,8 +1,11 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 // represents a job application which contains fields for the position,
 // company, and your current application status
-public class JobApplication {
+public class JobApplication implements Writable {
     private String title;              // name of the actual job position/title
     private String company;            // name of the company to apply for
     private int status;                // job application status, represented by ints from 0 to 6
@@ -15,10 +18,10 @@ public class JobApplication {
      *          inclusive where each integer represents an application status, any integer
      *          beyond the boundaries automatically sets status to 0 ("interested")
      */
-    public void jobApplication(String positionTitle, String companyName, int applicationStatus) {
+    public JobApplication(String positionTitle, String companyName, int applicationStatus) {
         this.title = positionTitle;
         this.company = companyName;
-        if (applicationStatus <= 6 && applicationStatus >= 0) {
+        if (validStatus(applicationStatus)) {
             this.status = applicationStatus;
         } else {
             this.status = 0;
@@ -77,11 +80,7 @@ public class JobApplication {
 
     // EFFECTS: verifies if a job with a position and company is equal to the stored job
     public boolean sameJob(String position, String company) {
-        if (this.title == position && this.company == company) {
-            return true;
-        } else {
-            return false;
-        }
+        return position.equals(this.title) && company.equals(this.company);
     }
 
     // EFFECTS: displays the job with its attributes separated by slashes
@@ -101,5 +100,15 @@ public class JobApplication {
         } else if (this.status == 6) {
             System.out.println(this.title + "/" + this.company + "/rejected :(");
         }
+    }
+
+    @Override
+    // EFFECTS: returns current JobApplication object as a JSONObject
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("position", title);
+        json.put("company", company);
+        json.put("status", status);
+        return json;
     }
 }

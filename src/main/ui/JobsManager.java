@@ -1,17 +1,30 @@
 package ui;
 
+import model.CurrentList;
 import model.JobApplication;
-import java.lang.reflect.Array;
+import persistence.JsonReader;
+import persistence.JsonWriter;
+
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.IOException;
 
 // application which keeps track of all your job applications for you
 public class JobsManager {
     private ArrayList<JobApplication> manager;
+    private static final String JSON_STORE = "./data/myJobs.json";
     private Scanner input;
+    private CurrentList cl;
+    private JsonReader jsonReader;
+    private JsonWriter jsonWriter;
 
     // EFFECTS: begins running the job manager application
-    public JobsManager() {
+    public JobsManager() throws FileNotFoundException {
+        input = new Scanner(System.in);
+        cl = new CurrentList("Your List");
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
         runManager();
     }
 
@@ -49,6 +62,10 @@ public class JobsManager {
             updateJobStatus();
         } else if (command.equals("v")) {
             viewJobs();
+        } else if (command.equals("s")) {
+            saveJobs();
+        } else if (command.equals("l")) {
+            loadJobs();
         } else {
             System.out.println("What do you mean? Try again, please. \n");
         }
@@ -69,6 +86,8 @@ public class JobsManager {
         System.out.println("\tr -> remove job");
         System.out.println("\tu -> update a job status");
         System.out.println("\tv -> view stored jobs");
+        System.out.println("\ts -> save job applications to file");
+        System.out.println("\tl -> load job applications from file");
         System.out.println("\tq -> quit");
     }
 
@@ -89,12 +108,10 @@ public class JobsManager {
             System.out.println("Input was not a valid status; was set to 0");
         }
 
-        JobApplication newJob = new JobApplication();
-        newJob.setTitle(job);
-        newJob.setCompany(company);
-        newJob.setStatus(status);
+        JobApplication newJob = new JobApplication(job, company, status);
         manager.add(newJob);
         System.out.println("Job added to the applications manager!");
+        cl.addJob(newJob);
     }
 
     // MODIFIES: this
@@ -159,6 +176,34 @@ public class JobsManager {
             for (JobApplication jobs : manager) {
                 jobs.displayJob();
             }
+        }
+    }
+
+    // EFFECTS: saves the workroom to file
+    private void saveJobs() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(cl);
+            jsonWriter.close();
+            System.out.println("Saved " + cl.getName() + " to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads job applications list from file
+    private void loadJobs() {
+        try {
+            cl = jsonReader.read();
+
+            for (JobApplication jobs: cl.getJobs()) {
+                manager.add(jobs);
+            }
+
+            System.out.println("Loaded " + cl.getName() + " from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
         }
     }
 
