@@ -44,23 +44,23 @@ public class JsonReader {
     private CurrentList parseCurrentList(JSONObject jsonObject) {
         String name = jsonObject.getString("name");
         CurrentList newCl = new CurrentList(name);
-        addThingies(newCl, jsonObject);
+        addJobs(newCl, jsonObject);
         return newCl;
     }
 
     // MODIFIES: cl
     // EFFECTS: parses job applications from JSON object and adds them to the current list
-    private void addThingies(CurrentList cl, JSONObject jsonObject) {
+    private void addJobs(CurrentList cl, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("jobs");
         for (Object json : jsonArray) {
-            JSONObject nextThingy = (JSONObject) json;
-            addThingy(cl, nextThingy);
+            JSONObject nextJob = (JSONObject) json;
+            addJob(cl, nextJob);
         }
     }
 
     // MODIFIES: cl
     // EFFECTS: parses thingy from JSON object and adds it to workroom
-    private void addThingy(CurrentList cl, JSONObject jsonObject) {
+    private void addJob(CurrentList cl, JSONObject jsonObject) {
         String position = jsonObject.getString("position");
         String company = jsonObject.getString("company");
         int status = jsonObject.getInt("status");

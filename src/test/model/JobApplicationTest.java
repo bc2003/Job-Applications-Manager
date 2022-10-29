@@ -10,10 +10,7 @@ class JobApplicationTest {
 
     @BeforeEach
     public void setup() {
-        testJob = new JobApplication();
-        testJob.setTitle("Cashier");
-        testJob.setCompany("Walmart");
-        testJob.setStatus(0);
+        testJob = new JobApplication("Cashier", "Walmart", 0);
     }
 
     @Test
