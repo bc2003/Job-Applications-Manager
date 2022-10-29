@@ -103,7 +103,7 @@ public class JobApplication implements Writable {
     }
 
     @Override
-    // EFFECTS: returns current JobApplication object as a JSONObject
+    // EFFECTS: returns this JobApplication object as a JSONObject
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("position", title);

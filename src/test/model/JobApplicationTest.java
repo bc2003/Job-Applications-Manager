@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class JobApplicationTest {
     private JobApplication testJob;
+    private JobApplication testJobFalseSetup;
 
     @BeforeEach
     public void setup() {
@@ -18,6 +19,30 @@ class JobApplicationTest {
         assertEquals("Cashier", testJob.getTitle());
         assertEquals("Walmart", testJob.getCompany());
         assertEquals(0, testJob.getStatus());
+        testJobFalseSetup = new JobApplication("Slave", "McDonald's", 420);
+        assertEquals("Slave", testJobFalseSetup.getTitle());
+        assertEquals("McDonald's", testJobFalseSetup.getCompany());
+        assertEquals(0, testJobFalseSetup.getStatus());
+    }
+
+    @Test
+    public void testSetTitle() {
+        String str = "Cashier";
+        assertTrue(str.equals(testJob.getTitle()));
+        testJob.setTitle("Manager");
+        assertTrue(testJob.getTitle().equals("Manager"));
+        testJob.setTitle("Cashier");
+        assertTrue(str.equals(testJob.getTitle()));
+    }
+
+    @Test
+    public void testSetCompany() {
+        String str = "Walmart";
+        assertTrue(str.equals(testJob.getCompany()));
+        testJob.setCompany("Target");
+        assertTrue(testJob.getCompany().equals("Target"));
+        testJob.setCompany("Walmart");
+        assertTrue(str.equals(testJob.getCompany()));
     }
 
     @Test
@@ -84,5 +109,33 @@ class JobApplicationTest {
         assertFalse(JobApplication.validStatus(7));
         assertTrue(JobApplication.validStatus(0));
         assertFalse(JobApplication.validStatus(420));
+    }
+
+    @Test
+    public void testSameJob() {
+        assertTrue(testJob.sameJob("Cashier", "Walmart"));
+        assertFalse(testJob.sameJob("Cashier", "Target"));
+        testJob.setCompany("Target");
+        assertTrue(testJob.sameJob("Cashier", "Target"));
+    }
+
+    @Test
+    public void testDisplayJob() {
+        testJob.displayJob();
+        testJob.setStatus(1);
+        testJob.displayJob();
+        testJob.setStatus(2);
+        testJob.displayJob();
+        testJob.setStatus(3);
+        testJob.displayJob();
+        testJob.setStatus(4);
+        testJob.displayJob();
+        testJob.setStatus(5);
+        testJob.displayJob();
+        testJob.setStatus(6);
+        assertEquals(6, testJob.getStatus());
+        testJob.displayJob();
+        testJob.setStatus(7);
+        assertEquals(6, testJob.getStatus());
     }
 }
