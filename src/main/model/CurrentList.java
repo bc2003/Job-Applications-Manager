@@ -7,13 +7,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-// entire class referenced from sample application provided on edX
+// some methods referenced from JsonSerializationDemo provided on edX
 // represents a current list of jobs stored in the job applications manager
 public class CurrentList implements Writable {
     private String name;
     private List<JobApplication> jobList;
 
-    // EFFECTS: constructs a room with a name and empty list of jobs
+    // EFFECTS: constructs a job list with a name and is empty
     public CurrentList(String name) {
         this.name = name;
         jobList = new ArrayList<>();
@@ -25,12 +25,12 @@ public class CurrentList implements Writable {
     }
 
     // MODIFIES: this
-    // EFFECTS: adds a job to this room
+    // EFFECTS: adds a job to the current list
     public void addJob(JobApplication jobApp) {
         jobList.add(jobApp);
     }
 
-    // EFFECTS: returns an unmodifiable list of jobs in this room
+    // EFFECTS: returns an unmodifiable list of jobs in this list
     public List<JobApplication> getJobs() {
         return Collections.unmodifiableList(jobList);
     }

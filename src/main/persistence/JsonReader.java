@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 import org.json.*;
 
-// entire class referenced from
+// some methods referenced from JsonSerializationDemo in edX
 // represents a reader that reads room from JSON data stored in file
 public class JsonReader {
     private String source;
@@ -21,7 +21,7 @@ public class JsonReader {
         this.source = source;
     }
 
-    // EFFECTS: reads workroom from file and returns it;
+    // EFFECTS: reads job applications list from file and returns it;
     // throws IOException if an error occurs reading data from file
     public CurrentList read() throws IOException {
         String jsonData = readFile(source);
@@ -40,7 +40,7 @@ public class JsonReader {
         return contentBuilder.toString();
     }
 
-    // EFFECTS: parses room from JSON object and returns it
+    // EFFECTS: parses job list from JSON object and returns it
     private CurrentList parseCurrentList(JSONObject jsonObject) {
         String name = jsonObject.getString("name");
         CurrentList newCl = new CurrentList(name);
@@ -59,7 +59,7 @@ public class JsonReader {
     }
 
     // MODIFIES: cl
-    // EFFECTS: parses thingy from JSON object and adds it to workroom
+    // EFFECTS: parses job applications from JSON object and adds it to the current list
     private void addJob(CurrentList cl, JSONObject jsonObject) {
         String position = jsonObject.getString("position");
         String company = jsonObject.getString("company");

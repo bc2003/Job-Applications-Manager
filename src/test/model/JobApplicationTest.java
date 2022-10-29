@@ -117,6 +117,8 @@ class JobApplicationTest {
         assertFalse(testJob.sameJob("Cashier", "Target"));
         testJob.setCompany("Target");
         assertTrue(testJob.sameJob("Cashier", "Target"));
+        assertFalse(testJob.sameJob("Cashier", "Walmart"));
+        assertFalse(testJob.sameJob("Manager", "Walmart"));
     }
 
     @Test
@@ -136,6 +138,7 @@ class JobApplicationTest {
         assertEquals(6, testJob.getStatus());
         testJob.displayJob();
         testJob.setStatus(7);
+        testJob.displayJob();
         assertEquals(6, testJob.getStatus());
     }
 }

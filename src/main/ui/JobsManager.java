@@ -192,7 +192,7 @@ public class JobsManager {
     }
 
     // MODIFIES: this
-    // EFFECTS: loads job applications list from file
+    // EFFECTS: loads job applications list from file, adds them to active job manager
     private void loadJobs() {
         try {
             cl = jsonReader.read();
