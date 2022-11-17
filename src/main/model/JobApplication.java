@@ -103,6 +103,27 @@ public class JobApplication implements Writable {
     }
 
     @Override
+    public String toString() {
+        if (this.status == 0) {
+            return this.title + "/" + this.company + "/interested";
+        } else if (this.status == 1) {
+            return this.title + "/" + this.company + "/applied";
+        } else if (this.status == 2) {
+            return this.title + "/" + this.company + "/interviewed";
+        } else if (this.status == 3) {
+            return this.title + "/" + this.company + "/received offer";
+        } else if (this.status == 4) {
+            return this.title + "/" + this.company + "/turned down offer";
+        } else if (this.status == 5) {
+            return this.title + "/" + this.company + "/accepted offer";
+        } else if (this.status == 6) {
+            return this.title + "/" + this.company + "/rejected :(";
+        } else {
+            return null;
+        }
+    }
+
+    @Override
     // EFFECTS: returns this JobApplication object as a JSONObject
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
