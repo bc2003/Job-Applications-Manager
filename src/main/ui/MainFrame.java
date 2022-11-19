@@ -3,9 +3,11 @@ package ui;
 import javax.swing.*;
 import java.awt.*;
 
+// creates the frame for the GUI
 public class MainFrame extends JFrame {
 
-    MainFrame() {
+    // EFFECTS: sets up the frame for the GUI, as well as the icon to replace the Java logo
+    public MainFrame() {
         this.setTitle("Job Applications Manager");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);

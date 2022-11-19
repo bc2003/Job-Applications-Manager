@@ -1,11 +1,16 @@
 package ui;
 
+import model.CurrentList;
 import model.JobApplication;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
 import java.awt.*;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import javax.swing.*;
 import javax.swing.JLabel;
@@ -16,13 +21,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JList;
 import javax.swing.ImageIcon;
 
-// represents main window where we do our operations in the job applications manager
-public class GraphicalUserInterface implements ActionListener, ListSelectionListener {
+// represents main window where we do our operations on the job applications manager GUI
+public class GraphicalUserInterface implements ActionListener {
     private JList<JobApplication> list = new JList<>();
     private DefaultListModel<JobApplication> model = new DefaultListModel<>();
     private JScrollPane pane = new JScrollPane(list);
 
     private MainPanel mainPanel;
+    private DoneWindow doneWindow;
 
     private MainButtons addButton;
     private MainButtons removeButton;
@@ -30,52 +36,57 @@ public class GraphicalUserInterface implements ActionListener, ListSelectionList
     private MainButtons saveButton;
     private MainButtons loadButton;
 
-    // EFFECTS: creates main window where we conduct our operations
-    public GraphicalUserInterface() {
-        /*
-        ImageIcon img = new ImageIcon("src/main/ui/Loading.jpg");
-        JLabel pic = new JLabel(img);
-        pic.setBounds(500, 300, 500, 200);
-        */
+    JTextField titleTextField;
+    JTextField companyTextField;
+    JComboBox appStatDropBox;
 
+    private CurrentList cl;
+    private JsonReader jsonReader;
+    private JsonWriter jsonWriter;
+    private static final String JSON_STORE = "./data/myJobs.json";
+
+    // EFFECTS: creates the GUI where we can conduct our operations
+    public GraphicalUserInterface() {
         mainPanel = new MainPanel();
         addButton.addActionListener(this);
         saveButton.addActionListener(this);
         loadButton.addActionListener(this);
 
-        ListPanel listPanel = new ListPanel();
         list.setModel(model);
-        model.addElement(new JobApplication("Cashier", "Costco", 0));
-        model.addElement(new JobApplication("Cashier", "Superstore", 1));
-        pane.setBounds(500,0,500,300);
+        pane.setBounds(500,0,500,500);
 
         WorkPanel workPanel = new WorkPanel();
         mainPanel.add(workPanel);
+
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
 
         MainFrame myFrame = new MainFrame();
         myFrame.add(mainPanel);
         myFrame.add(pane);
     }
 
+    // class which creates the left side panel where the actual work occurs
     public class MainPanel extends JPanel {
-        MainPanel() {
-            BoxLayout boxLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
+
+        // EFFECTS: sets up the left side panel of the GUI
+        public MainPanel() {
             this.setBackground(new Color(200, 200, 200));
             this.setBounds(0,0, 500, 500);
-            this.setLayout(new FlowLayout(FlowLayout.CENTER, 150, 20));
+            this.setLayout(new FlowLayout(FlowLayout.CENTER, 150, 25));
             this.setBorder(BorderFactory.createRaisedBevelBorder());
 
             addButton = new MainButtons();
             addButton.setText("Add Job");
-            // addButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+            addButton.setAlignmentX(Component.CENTER_ALIGNMENT);
             removeButton = new MainButtons();
             removeButton.setText("Remove Job");
             saveButton = new MainButtons();
             saveButton.setText("Save to Folder");
-            // saveButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+            saveButton.setAlignmentX(Component.CENTER_ALIGNMENT);
             loadButton = new MainButtons();
             loadButton.setText("Load from Folder");
-            // loadButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+            loadButton.setAlignmentX(Component.CENTER_ALIGNMENT);
             this.add(addButton);
             this.add(removeButton);
             this.add(saveButton);
@@ -83,60 +94,47 @@ public class GraphicalUserInterface implements ActionListener, ListSelectionList
         }
     }
 
-    // might not need this at all XD
-    public class ListPanel extends JPanel {
-        ListPanel() {
-            this.setBounds(500, 0, 500, 300);
-            this.setLayout(null);
-        }
-    }
-
-    // maybe get rid of this too
-    public class LogoPanel extends JPanel {
-        LogoPanel() {
-            ImageIcon img = new ImageIcon("src/main/ui/Loading.jpg");
-            /*
-            BufferedImage myPicture = ImageIO.read(new File("src/main/ui/Loading.jpg"));
-            JLabel picLabel = new JLabel(new ImageIcon(myPicture));
-            this.add(picLabel);
-            */
-            this.setBackground(new Color(255, 255, 255));
-            this.setBounds(500, 300, 500, 200);
-            this.setLayout(new FlowLayout());
-        }
-    }
-
+    // class which creates a panel where you can fill out job information
     public class WorkPanel extends JPanel {
-        WorkPanel() {
-            //this.setBackground(new Color(50, 50, 50));
+
+        // EFFECTS: sets up the work panel where you can input job information and select an application status
+        public WorkPanel() {
+            this.setBackground(new Color(50, 50, 50));
             this.setPreferredSize(new Dimension(400, 200));
             this.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 10));
-            this.setBorder(BorderFactory.createRaisedBevelBorder());
+            this.setBorder(BorderFactory.createLoweredBevelBorder());
 
             VoidLabel title = new VoidLabel();
             title.setText("Job Position: ");
-            JTextField titleTextField = new JTextField();
+            titleTextField = new JTextField();
             titleTextField.setPreferredSize(new Dimension(150, 40));
 
             VoidLabel company = new VoidLabel();
             company.setText("Company: ");
-            JTextField companyTextField = new JTextField();
+            companyTextField = new JTextField();
             companyTextField.setPreferredSize(new Dimension(150, 40));
 
             String[] applicationStatus = { "0: Interested", "1: Applied", "2: Interviewed",
                     "3: Received Offer", "4: Turned Down Offer", "5: Accepted Offer", "6: Rejected" };
-            JComboBox appStatDropBox = new JComboBox(applicationStatus);
+            appStatDropBox = new JComboBox(applicationStatus);
+
+            VoidLabel instructionLabel = new VoidLabel();
+            instructionLabel.setText("Press Add Button to Add Job");
 
             this.add(title);
             this.add(titleTextField);
             this.add(company);
             this.add(companyTextField);
             this.add(appStatDropBox);
+            this.add(instructionLabel);
         }
     }
 
+    // sets up my preferred formatting for the buttons for main operations
     public class MainButtons extends JButton {
-        MainButtons() {
+
+        // EFFECTS: constructs a button with Montserrat text and without the weird box thing around it
+        public MainButtons() {
             this.setBounds(200, 0, 400, 100);
             this.setFont(new Font("Montserrat", Font.BOLD, 20));
             this.setFocusable(false);
@@ -145,30 +143,70 @@ public class GraphicalUserInterface implements ActionListener, ListSelectionList
         }
     }
 
-    // maybe get rid of this XD
+    // simply sets up the colour of the text
     public class VoidLabel extends JLabel {
-        VoidLabel() {
-            this.setForeground(new Color(255, 255, 255)); // sets text color
-            //this.setHorizontalAlignment(JLabel.CENTER);
-            //this.setVerticalAlignment(JLabel.LEFT);
+
+        // EFFECTS: sets up the colour of the text for the work panel
+        public VoidLabel() {
+            this.setForeground(new Color(255, 255, 255));
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: performs the actions designated by the main buttons
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == addButton) {
-            System.out.println("hei gui");
+            addButton();
         } else if (e.getSource() == saveButton) {
-            System.out.println("Wo shi");
+            saveButton();
+        } else if (e.getSource() == loadButton) {
+            loadButton();
         }
     }
 
-    // MUST OVERRIDE THIS ONE
-    public void valueChanged(ListSelectionEvent e) {
-        // stub
+    // MODIFIES: this
+    // EFFECTS: adds a job to the job application manager given that all fields are filled out
+    public void addButton() {
+        String title = titleTextField.getText();
+        String company = companyTextField.getText();
+        Integer appStat = appStatDropBox.getSelectedIndex();
+        if (!title.isEmpty() & !company.isEmpty()) {
+            model.addElement(new JobApplication(title, company, appStat));
+        } else {
+            System.out.println("Finish filling out the fields!");
+        }
     }
 
-    public static void main(String[] args) {
-        GraphicalUserInterface gui = new GraphicalUserInterface();
+    // MODIFIES: this
+    // EFFECTS: saves jobs in the job application manager to JSON file
+    public void saveButton() {
+        try {
+            cl = new CurrentList("Your List");
+            int ashHadu = model.getSize();
+            for (int i = 0; i < ashHadu; i++) {
+                JobApplication job = model.getElementAt(i);
+                cl.addJob(job);
+            }
+            jsonWriter.open();
+            jsonWriter.write(cl);
+            jsonWriter.close();
+        } catch (FileNotFoundException fileNotFoundException) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads jobs from JSON file to the job applications manager
+    public void loadButton() {
+        try {
+            cl = jsonReader.read();
+            cl.toString();
+            for (JobApplication job : cl.getJobs()) {
+                model.addElement(job);
+            }
+        } catch (IOException ioException) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
     }
 }

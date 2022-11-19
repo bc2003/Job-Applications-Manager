@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.JList;
+
 // some methods referenced from JsonSerializationDemo provided on edX
 // represents a current list of jobs stored in the job applications manager
 public class CurrentList implements Writable {

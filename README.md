@@ -31,3 +31,11 @@ more efficiently.
 - As a user, I want to be able to remove a job from the job application manager.
 - (P2) As a user, I want to be able to save all the jobs currently in the job application manager to file.
 - (P2) As a user, I want to be able to load all jobs saved into the job application manager from file.
+
+# Instructions for Grader
+
+- You can generate the first required event related to adding Xs to a Y by typing in the fields for the job position, company, and selecting an application status from the dropdown.
+- You can generate the second required event related to adding Xs to a Y by clicking the "Add Job" button.
+- You can locate my visual component by looking at the top right white panel.
+- You can save the state of my application by clicking the "Save Jobs" button. Of course, this doesn't do anything if there are no jobs in the visual component.
+- You can reload the state of my application by clicking the "Load Jobs" button.
