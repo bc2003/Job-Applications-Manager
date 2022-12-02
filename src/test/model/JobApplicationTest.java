@@ -141,4 +141,25 @@ class JobApplicationTest {
         testJob.displayJob();
         assertEquals(6, testJob.getStatus());
     }
+
+    @Test
+    public void testToString() {
+        testJob.toString();
+        testJob.setStatus(1);
+        testJob.toString();
+        testJob.setStatus(2);
+        testJob.toString();
+        testJob.setStatus(3);
+        testJob.toString();
+        testJob.setStatus(4);
+        testJob.toString();
+        testJob.setStatus(5);
+        testJob.toString();
+        testJob.setStatus(6);
+        assertEquals(6, testJob.getStatus());
+        testJob.toString();
+        testJob.setStatus(7);
+        testJob.toString();
+        assertEquals(6, testJob.getStatus());
+    }
 }

@@ -1,7 +1,11 @@
 package ui;
 
+import model.EventLog;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 // creates the frame for the GUI
 public class MainFrame extends JFrame {
@@ -10,6 +14,13 @@ public class MainFrame extends JFrame {
     public MainFrame() {
         this.setTitle("Job Applications Manager");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowOpened(e);
+                new ConsolePrinter(EventLog.getInstance()).printLog();
+            }
+        });
         this.setLayout(null);
         this.setResizable(false);
         this.setSize(1000, 500);

@@ -2,6 +2,7 @@ package ui;
 
 import model.CurrentList;
 import model.JobApplication;
+import model.EventCaller;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
@@ -44,6 +45,8 @@ public class GraphicalUserInterface implements ActionListener {
     private JsonReader jsonReader;
     private JsonWriter jsonWriter;
     private static final String JSON_STORE = "./data/myJobs.json";
+
+    private EventCaller eventCaller;
 
     // EFFECTS: creates the GUI where we can conduct our operations
     public GraphicalUserInterface() {
@@ -211,7 +214,10 @@ public class GraphicalUserInterface implements ActionListener {
         String company = companyTextField.getText();
         Integer appStat = appStatDropBox.getSelectedIndex();
         if (!title.isEmpty() & !company.isEmpty()) {
-            model.addElement(new JobApplication(title, company, appStat));
+            JobApplication job = new JobApplication(title, company, appStat);
+            model.addElement(job);
+            eventCaller = new EventCaller(job);
+            eventCaller.addEvent();
         } else {
             System.out.println("Finish filling out the fields!");
         }
@@ -228,7 +234,9 @@ public class GraphicalUserInterface implements ActionListener {
             for (int i = 0; i < ashHadu; i++) {
                 JobApplication job = model.getElementAt(i);
                 if (title.equals(job.getTitle()) & company.equals(job.getCompany()) & appStat == job.getStatus()) {
-                    model.removeElementAt(i);
+                    model.removeElement(job);
+                    eventCaller = new EventCaller(job);
+                    eventCaller.removeEvent();
                 }
             }
         } else {
@@ -252,6 +260,8 @@ public class GraphicalUserInterface implements ActionListener {
                     model.removeElementAt(i);
                     model.add(i, job);
                     truth = true;
+                    eventCaller = new EventCaller(job);
+                    eventCaller.updateEvent();
                 }
             }
             if (!truth) {
