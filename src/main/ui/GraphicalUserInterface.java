@@ -49,6 +49,8 @@ public class GraphicalUserInterface implements ActionListener {
     public GraphicalUserInterface() {
         mainPanel = new MainPanel();
         addButton.addActionListener(this);
+        removeButton.addActionListener(this);
+        updateButton.addActionListener(this);
         saveButton.addActionListener(this);
         loadButton.addActionListener(this);
 
@@ -73,7 +75,7 @@ public class GraphicalUserInterface implements ActionListener {
         public MainPanel() {
             this.setBackground(new Color(200, 200, 200));
             this.setBounds(0,0, 500, 500);
-            this.setLayout(new FlowLayout(FlowLayout.CENTER, 150, 25));
+            this.setLayout(new FlowLayout(FlowLayout.CENTER, 150, 17));
             this.setBorder(BorderFactory.createRaisedBevelBorder());
 
             addButton = new MainButtons();
@@ -81,6 +83,9 @@ public class GraphicalUserInterface implements ActionListener {
             addButton.setAlignmentX(Component.CENTER_ALIGNMENT);
             removeButton = new MainButtons();
             removeButton.setText("Remove Job");
+            removeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+            updateButton = new MainButtons();
+            updateButton.setText("Update Job");
             saveButton = new MainButtons();
             saveButton.setText("Save to Folder");
             saveButton.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -89,6 +94,7 @@ public class GraphicalUserInterface implements ActionListener {
             loadButton.setAlignmentX(Component.CENTER_ALIGNMENT);
             this.add(addButton);
             this.add(removeButton);
+            this.add(updateButton);
             this.add(saveButton);
             this.add(loadButton);
         }
@@ -96,30 +102,29 @@ public class GraphicalUserInterface implements ActionListener {
 
     // class which creates a panel where you can fill out job information
     public class WorkPanel extends JPanel {
+        String[] applicationStatus = { "0: Interested", "1: Applied", "2: Interviewed",
+                "3: Received Offer", "4: Turned Down Offer", "5: Accepted Offer", "6: Rejected" };
 
         // EFFECTS: sets up the work panel where you can input job information and select an application status
         public WorkPanel() {
             this.setBackground(new Color(50, 50, 50));
             this.setPreferredSize(new Dimension(400, 200));
-            this.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 10));
+            this.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 5));
             this.setBorder(BorderFactory.createLoweredBevelBorder());
 
             VoidLabel title = new VoidLabel();
             title.setText("Job Position: ");
-            titleTextField = new JTextField();
-            titleTextField.setPreferredSize(new Dimension(150, 40));
+            titleTextField = textField();
 
             VoidLabel company = new VoidLabel();
             company.setText("Company: ");
-            companyTextField = new JTextField();
-            companyTextField.setPreferredSize(new Dimension(150, 40));
+            companyTextField = textField();
 
-            String[] applicationStatus = { "0: Interested", "1: Applied", "2: Interviewed",
-                    "3: Received Offer", "4: Turned Down Offer", "5: Accepted Offer", "6: Rejected" };
             appStatDropBox = new JComboBox(applicationStatus);
 
-            VoidLabel instructionLabel = new VoidLabel();
-            instructionLabel.setText("Press Add Button to Add Job");
+            VoidLabel instructionLabel = addLabel();
+            VoidLabel instructionLabel2 = removeLabel();
+            VoidLabel instructionLabel3 = updateLabel();
 
             this.add(title);
             this.add(titleTextField);
@@ -127,6 +132,36 @@ public class GraphicalUserInterface implements ActionListener {
             this.add(companyTextField);
             this.add(appStatDropBox);
             this.add(instructionLabel);
+            this.add(instructionLabel2);
+            this.add(instructionLabel3);
+        }
+
+        // returns the text fields where the user can put in job information
+        public JTextField textField() {
+            JTextField textField = new JTextField();
+            textField.setPreferredSize(new Dimension(150, 40));
+            return textField;
+        }
+
+        // creates label which gives instruction for how to add a job
+        public VoidLabel addLabel() {
+            VoidLabel addLabel = new VoidLabel();
+            addLabel.setText("Press 'Add Job' to Add Job");
+            return addLabel;
+        }
+
+        // creates label which gives instruction for how to remove a job
+        public VoidLabel removeLabel() {
+            VoidLabel removeLabel = new VoidLabel();
+            removeLabel.setText("Press 'Remove Job' to Remove Job");
+            return removeLabel;
+        }
+
+        // creates label which gives instruction for how to update a job
+        public VoidLabel updateLabel() {
+            VoidLabel updateLabel = new VoidLabel();
+            updateLabel.setText("Press 'Update Job' to Update Job");
+            return updateLabel;
         }
     }
 
@@ -158,6 +193,10 @@ public class GraphicalUserInterface implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == addButton) {
             addButton();
+        } else if (e.getSource() == removeButton) {
+            removeButton();
+        } else if (e.getSource() == updateButton) {
+            updateButton();
         } else if (e.getSource() == saveButton) {
             saveButton();
         } else if (e.getSource() == loadButton) {
@@ -173,6 +212,51 @@ public class GraphicalUserInterface implements ActionListener {
         Integer appStat = appStatDropBox.getSelectedIndex();
         if (!title.isEmpty() & !company.isEmpty()) {
             model.addElement(new JobApplication(title, company, appStat));
+        } else {
+            System.out.println("Finish filling out the fields!");
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: removes a job from the job application manager given that all fields are filled out
+    public void removeButton() {
+        String title = titleTextField.getText();
+        String company = companyTextField.getText();
+        Integer appStat = appStatDropBox.getSelectedIndex();
+        if (!title.isEmpty() & !company.isEmpty()) {
+            int ashHadu = model.getSize();
+            for (int i = 0; i < ashHadu; i++) {
+                JobApplication job = model.getElementAt(i);
+                if (title.equals(job.getTitle()) & company.equals(job.getCompany()) & appStat == job.getStatus()) {
+                    model.removeElementAt(i);
+                }
+            }
+        } else {
+            System.out.println("Finish filling out the fields!");
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: updates the status for an already existing job
+    public void updateButton() {
+        String title = titleTextField.getText();
+        String company = companyTextField.getText();
+        Integer newAppStat = appStatDropBox.getSelectedIndex();
+        if (!title.isEmpty() & !company.isEmpty()) {
+            int ashHadu = model.getSize();
+            boolean truth = false;
+            for (int i = 0; i < ashHadu; i++) {
+                JobApplication job = model.getElementAt(i);
+                if (title.equals(job.getTitle()) & company.equals(job.getCompany())) {
+                    job = new JobApplication(title, company, newAppStat);
+                    model.removeElementAt(i);
+                    model.add(i, job);
+                    truth = true;
+                }
+            }
+            if (!truth) {
+                System.out.println("Cannot find job!");
+            }
         } else {
             System.out.println("Finish filling out the fields!");
         }
