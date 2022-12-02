@@ -1,0 +1,15 @@
+{
+    "jobs": [
+        {
+            "company": "Walmart",
+            "position": "Cashier",
+            "status": 0
+        },
+        {
+            "company": "McDonald's",
+            "position": "Slave",
+            "status": 0
+        }
+    ],
+    "name": "My List"
+}

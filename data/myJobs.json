@@ -1,0 +1,20 @@
+{
+    "jobs": [
+        {
+            "company": "Walmart",
+            "position": "Cashier",
+            "status": 1
+        },
+        {
+            "company": "Costco",
+            "position": "Cashier",
+            "status": 1
+        },
+        {
+            "company": "Superstore",
+            "position": "Cashier",
+            "status": 0
+        }
+    ],
+    "name": "Your List"
+}
