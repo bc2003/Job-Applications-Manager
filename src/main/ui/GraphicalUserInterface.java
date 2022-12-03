@@ -28,8 +28,9 @@ public class GraphicalUserInterface implements ActionListener {
     private DefaultListModel<JobApplication> model = new DefaultListModel<>();
     private JScrollPane pane = new JScrollPane(list);
 
+    MainFrame myFrame;
+
     private MainPanel mainPanel;
-    private DoneWindow doneWindow;
 
     private MainButtons addButton;
     private MainButtons removeButton;
@@ -66,7 +67,7 @@ public class GraphicalUserInterface implements ActionListener {
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
 
-        MainFrame myFrame = new MainFrame();
+        myFrame = new MainFrame();
         myFrame.add(mainPanel);
         myFrame.add(pane);
     }

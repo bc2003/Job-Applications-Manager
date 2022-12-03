@@ -39,3 +39,8 @@ more efficiently.
 - You can locate my visual component by looking at the top right white panel.
 - You can save the state of my application by clicking the "Save Jobs" button. Of course, this doesn't do anything if there are no jobs in the visual component.
 - You can reload the state of my application by clicking the "Load Jobs" button.
+
+# Phase 4: Task 3
+- would create a new class to store the job applications using some other data structure rather than using a DefaultListModel because I couldn't run for loops directly on it
+- make WorkPanel and VoidLabel aggregations in GraphicalUserInterface so that they could be used throughout the class rather than within the scope of just one or two methods
+- somehow include the splash screen (NewWindow) as a part of the Graphical User Interface instead of by itself accessed by Main
