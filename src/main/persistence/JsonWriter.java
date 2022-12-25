@@ -4,7 +4,7 @@ import model.CurrentList;
 import org.json.JSONObject;
 import java.io.*;
 
-// represents a writer that writes a JSON representation of room to file
+// represents a writer that writes a JSON representation of current list to a file
 public class JsonWriter {
     private static final int TAB = 4;
     private PrintWriter writer;
