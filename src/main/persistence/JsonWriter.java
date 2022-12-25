@@ -4,7 +4,6 @@ import model.CurrentList;
 import org.json.JSONObject;
 import java.io.*;
 
-// some methods referenced from JsonSerializationDemo in edX
 // represents a writer that writes a JSON representation of room to file
 public class JsonWriter {
     private static final int TAB = 4;

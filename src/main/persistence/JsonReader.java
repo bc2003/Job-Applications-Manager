@@ -11,7 +11,6 @@ import java.util.stream.Stream;
 
 import org.json.*;
 
-// some methods referenced from JsonSerializationDemo in edX
 // represents a reader that reads room from JSON data stored in file
 public class JsonReader {
     private String source;
